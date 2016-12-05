@@ -226,9 +226,16 @@ FieldInfoType TrafficCop::GetColumnFieldForValueType(
       return std::make_tuple(column_name, POSTGRES_VALUE_TYPE_TIMESTAMPS, 64);
     default:
       // Type not Identified
+<<<<<<< HEAD
       LOG_ERROR("Unrecognized column type '%s' [%d] for column '%s'",
                 TypeIdToString(column_type).c_str(), column_type,
                 column_name.c_str());
+=======
+      LOG_ERROR("Unrecognized column type: %d for column %s", column_type,
+                column_name.c_str());
+      // return String
+      return std::make_tuple(column_name, POSTGRES_VALUE_TYPE_TEXT, 255);
+>>>>>>> 088f494... remove old version logic
   }
   // return String
   return std::make_tuple(column_name, POSTGRES_VALUE_TYPE_TEXT, 255);
