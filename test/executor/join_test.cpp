@@ -295,8 +295,8 @@ void ExecuteNestedLoopJoinTest(PelotonJoinType join_type) {
   txn_manager.CommitTransaction(txn);
 
   // Print table
-  LOG_INFO("Left Table: %s", left_table->PrintTable().c_str());
-  LOG_INFO("Right Table: %s", right_table->PrintTable().c_str());
+  LOG_INFO("Left Table: %s", left_table->GetInfo().c_str());
+  LOG_INFO("Right Table: %s", right_table->GetInfo().c_str());
 
   //===--------------------------------------------------------------------===//
   // Begin nested loop
