@@ -18,15 +18,15 @@
 #include "executor/logical_tile.h"
 #include "executor/logical_tile_factory.h"
 
-#include "executor/hash_join_executor.h"
 #include "executor/hash_executor.h"
+#include "executor/hash_join_executor.h"
 #include "executor/index_scan_executor.h"
 #include "executor/merge_join_executor.h"
 #include "executor/nested_loop_join_executor.h"
 
 #include "expression/abstract_expression.h"
-#include "expression/tuple_value_expression.h"
 #include "expression/expression_util.h"
+#include "expression/tuple_value_expression.h"
 
 #include "planner/hash_join_plan.h"
 #include "planner/hash_plan.h"
@@ -38,9 +38,9 @@
 
 #include "concurrency/transaction_manager_factory.h"
 
-#include "executor/mock_executor.h"
 #include "executor/executor_tests_util.h"
 #include "executor/join_tests_util.h"
+#include "executor/mock_executor.h"
 
 using ::testing::NotNull;
 using ::testing::Return;
@@ -233,7 +233,6 @@ void PopulateTable(storage::DataTable *table, int num_rows, bool random,
   const bool allocate = true;
   auto testing_pool = TestingHarness::GetInstance().GetTestingPool();
   for (int rowid = 0; rowid < num_rows; rowid++) {
-
     storage::Tuple tuple(schema, allocate);
 
     // First column is unique in this case
@@ -295,8 +294,8 @@ void ExecuteNestedLoopJoinTest(PelotonJoinType join_type) {
   txn_manager.CommitTransaction(txn);
 
   // Print table
-  LOG_INFO("Left Table: %s", left_table->PrintTable().c_str());
-  LOG_INFO("Right Table: %s", right_table->PrintTable().c_str());
+  LOG_INFO("%s\n", left_table->GetInfo().c_str());
+  LOG_INFO("%s\n", right_table->GetInfo().c_str());
 
   //===--------------------------------------------------------------------===//
   // Begin nested loop
