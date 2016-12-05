@@ -241,9 +241,12 @@ class DataTable : public AbstractTable {
   // Get a string representation for debugging
   const std::string GetInfo() const;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const std::string PrintTable() const;
 >>>>>>> 088f494... remove old version logic
+=======
+>>>>>>> f996ef6... remove print table
 
   // try to insert into all indexes.
   // the last argument is the index entry in primary index holding the new

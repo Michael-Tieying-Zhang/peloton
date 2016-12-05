@@ -301,6 +301,7 @@ void ExecuteNestedLoopJoinTest(PelotonJoinType join_type) {
 =======
 =======
   // Print table
+<<<<<<< HEAD
 >>>>>>> 6b18a57... add debug info (print table) for unit test
   LOG_INFO("Left Table: %s", left_table->PrintTable().c_str());
   LOG_INFO("Right Table: %s", right_table->PrintTable().c_str());
@@ -310,6 +311,10 @@ void ExecuteNestedLoopJoinTest(PelotonJoinType join_type) {
   LOG_INFO("Left Table: %s", left_table->PrintTable().c_str());
   LOG_INFO("Right Table: %s", right_table->PrintTable().c_str());
 >>>>>>> de885a5... keep print table since it can print all values
+=======
+  LOG_INFO("Left Table: %s", left_table->GetInfo().c_str());
+  LOG_INFO("Right Table: %s", right_table->GetInfo().c_str());
+>>>>>>> f996ef6... remove print table
 
   //===--------------------------------------------------------------------===//
   // Begin nested loop

@@ -799,7 +799,7 @@ const std::string DataTable::GetInfo() const {
     std::string tileData = tile_group->GetInfo();
     //    dataBuffer << tileData;
     dataBuffer << peloton::StringUtil::Prefix(
-        peloton::StringBoxUtil::Box(tileData), GETINFO_SPACER);
+                      peloton::StringBoxUtil::Box(tileData), GETINFO_SPACER);
     tuple_count += tile_tuple_count;
   }
 
@@ -815,6 +815,7 @@ const std::string DataTable::GetInfo() const {
   return os.str();
 }
 
+<<<<<<< HEAD
 const std::string DataTable::PrintTable() const {
   std::ostringstream os;
 
@@ -850,6 +851,8 @@ const std::string DataTable::PrintTable() const {
 >>>>>>> 088f494... remove old version logic
 }
 
+=======
+>>>>>>> f996ef6... remove print table
 //===--------------------------------------------------------------------===//
 // INDEX
 //===--------------------------------------------------------------------===//
