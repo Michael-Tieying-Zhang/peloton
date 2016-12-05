@@ -294,8 +294,8 @@ void ExecuteNestedLoopJoinTest(PelotonJoinType join_type) {
 
   txn_manager.CommitTransaction(txn);
 
-  left_table->PrintTable();
-  right_table->PrintTable();
+  LOG_INFO("Left Table: %s", left_table->PrintTable().c_str());
+  LOG_INFO("Right Table: %s", right_table->PrintTable().c_str());
 
   //===--------------------------------------------------------------------===//
   // Begin nested loop
@@ -326,7 +326,7 @@ void ExecuteNestedLoopJoinTest(PelotonJoinType join_type) {
       index, key_column_ids, expr_types, values, runtime_keys);
 
   expression::AbstractExpression *predicate_scan = nullptr;
-  std::vector<oid_t> column_ids({0, 1, 3});
+  std::vector<oid_t> column_ids({0, 1, 3});  // COL_A, B, D
 
   // Create plan node.
   planner::IndexScanPlan left_table_node(left_table.get(), predicate_scan,

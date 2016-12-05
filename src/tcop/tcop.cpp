@@ -150,10 +150,10 @@ std::shared_ptr<Statement> TrafficCop::PrepareStatement(
 }
 
 std::vector<FieldInfoType> TrafficCop::GenerateTupleDescriptor(
-    parser::SQLStatement* stmt) {
+    parser::SQLStatement *stmt) {
   std::vector<FieldInfoType> tuple_descriptor;
   if (stmt->GetType() != STATEMENT_TYPE_SELECT) return tuple_descriptor;
-  auto select_stmt = (parser::SelectStatement*) stmt;
+  auto select_stmt = (parser::SelectStatement *)stmt;
 
   // TODO: this is a hack which I don't have time to fix now
   // but it replaces a worse hack that was here before
@@ -191,7 +191,6 @@ std::vector<FieldInfoType> TrafficCop::GenerateTupleDescriptor(
   // Get the columns of the table
   auto &table_columns = target_table->GetSchema()->GetColumns();
 
-
   int count = 0;
   for (auto expr : *select_stmt->select_list) {
     count++;
@@ -200,15 +199,17 @@ std::vector<FieldInfoType> TrafficCop::GenerateTupleDescriptor(
         tuple_descriptor.push_back(
             GetColumnFieldForValueType(column.column_name, column.column_type));
       }
-    }else{
+    } else {
       std::string col_name;
-      if (expr->alias.empty()){
-        col_name = expr->expr_name_.empty() ? std::string("expr")+ std::to_string(count) : expr->expr_name_;
-      }else{
+      if (expr->alias.empty()) {
+        col_name = expr->expr_name_.empty()
+                       ? std::string("expr") + std::to_string(count)
+                       : expr->expr_name_;
+      } else {
         col_name = expr->alias;
       }
       tuple_descriptor.push_back(
-                  GetColumnFieldForValueType(col_name, expr->GetValueType()));
+          GetColumnFieldForValueType(col_name, expr->GetValueType()));
     }
   }
   return tuple_descriptor;
@@ -228,7 +229,8 @@ FieldInfoType TrafficCop::GetColumnFieldForValueType(
       return std::make_tuple(column_name, POSTGRES_VALUE_TYPE_TIMESTAMPS, 64);
     default:
       // Type not Identified
-      LOG_ERROR("Unrecognized column type: %d", column_type);
+      LOG_ERROR("Unrecognized column type: %d for column %s", column_type,
+                column_name.c_str());
       // return String
       return std::make_tuple(column_name, POSTGRES_VALUE_TYPE_TEXT, 255);
   }

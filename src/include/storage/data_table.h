@@ -240,7 +240,7 @@ class DataTable : public AbstractTable {
 
   // Get a string representation for debugging
   const std::string GetInfo() const;
-  void PrintTable();
+  const std::string PrintTable() const;
 
   // try to insert into all indexes.
   // the last argument is the index entry in primary index holding the new
