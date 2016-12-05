@@ -293,9 +293,13 @@ void ExecuteNestedLoopJoinTest(PelotonJoinType join_type) {
   txn_manager.CommitTransaction(txn);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   LOG_INFO("%s\n", left_table->GetInfo().c_str());
   LOG_INFO("%s\n", right_table->GetInfo().c_str());
 =======
+=======
+  // Print table
+>>>>>>> 6b18a57... add debug info (print table) for unit test
   LOG_INFO("Left Table: %s", left_table->PrintTable().c_str());
   LOG_INFO("Right Table: %s", right_table->PrintTable().c_str());
 >>>>>>> 088f494... remove old version logic
