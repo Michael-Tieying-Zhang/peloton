@@ -246,7 +246,7 @@ TEST_F(PostgresParserTests, ExprTest) {
 TEST_F(PostgresParserTests, InsertTest) {
   std::vector<std::string> queries;
 
-  // Select with complicated where, tests both BoolExpr and AExpr
+  // Insert multiple tuples into the table
   queries.push_back("INSERT INTO foo VALUES (1, 2, 3), (4, 5, 6);");
 
   auto parser = parser::PostgresParser::GetInstance();
@@ -269,9 +269,11 @@ TEST_F(PostgresParserTests, InsertTest) {
     EXPECT_EQ(2, insert_stmt->insert_values->size());
 
     type::Value five = type::ValueFactory::GetIntegerValue(5);
-    type::CmpBool res = five.CompareEquals((
-        (expression::ConstantValueExpression *)insert_stmt->insert_values->at(1)
-            ->at(1))->GetValue());
+    type::CmpBool res = five.CompareEquals(
+        ((expression::ConstantValueExpression *)insert_stmt->insert_values
+             ->at(1)
+             ->at(1))
+            ->GetValue());
     EXPECT_EQ(1, res);
 
     delete stmt_list;
@@ -304,7 +306,6 @@ TEST_F(PostgresParserTests, InsertIntoSelectTest) {
     EXPECT_EQ("bar",
               std::string(insert_stmt->select->from_table->GetTableName()));
 
-    // LOG_TRACE("%d : %s", ++ii, stmt_list->GetInfo().c_str());
     LOG_INFO("%d : %s", ++ii, stmt_list->GetInfo().c_str());
     delete stmt_list;
   }
