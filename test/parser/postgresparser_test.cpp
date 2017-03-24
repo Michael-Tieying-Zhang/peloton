@@ -266,12 +266,9 @@ TEST_F(PostgresParserTests, InsertTest) {
     auto insert_stmt = (parser::InsertStatement *)stmt_list->GetStatement(0);
     EXPECT_EQ("foo", insert_stmt->GetTableName());
     EXPECT_TRUE(insert_stmt->insert_values != nullptr);
-    EXPECT_TRUE(insert_stmt->select->GetType() == StatementType::SELECT);
-    LOG_ERROR(insert_stmt->select->from_table->GetTableName());
+    EXPECT_EQ(2, insert_stmt->insert_values->size());
     EXPECT_EQ("bar", insert_stmt->select->from_table->GetTableName());
 
-    // LOG_TRACE("%d : %s", ++ii, stmt_list->GetInfo().c_str());
-    LOG_INFO("%d : %s", ++ii, stmt_list->GetInfo().c_str());
     delete stmt_list;
   }
 }

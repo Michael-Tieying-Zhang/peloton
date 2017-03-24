@@ -593,10 +593,10 @@ parser::SQLStatement* PostgresParser::InsertTransform(InsertStmt* root) {
 
   } else {
     result = new parser::InsertStatement(InsertType::VALUES);
-  }
 
-  PL_ASSERT(select_stmt->valuesLists != NULL);
-  result->insert_values = ValueListsTransform(select_stmt->valuesLists);
+    PL_ASSERT(select_stmt->valuesLists != NULL);
+    result->insert_values = ValueListsTransform(select_stmt->valuesLists);
+  }
 
   result->table_ref_ = RangeVarTransform((RangeVar*)(root->relation));
 
