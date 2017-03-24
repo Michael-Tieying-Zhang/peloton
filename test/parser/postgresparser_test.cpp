@@ -14,10 +14,10 @@
 #include <vector>
 
 #include "common/harness.h"
-#include "common/macros.h"
 #include "common/logger.h"
-#include "parser/postgresparser.h"
+#include "common/macros.h"
 #include "parser/parser.h"
+#include "parser/postgresparser.h"
 
 namespace peloton {
 namespace test {
@@ -148,10 +148,16 @@ TEST_F(PostgresParserTests, JoinTest) {
   std::vector<std::string> queries;
 
   // Select with join
-  queries.push_back("SELECT * FROM foo INNER JOIN bar ON foo.id=bar.id AND foo.val > bar.val;");
+  queries.push_back(
+      "SELECT * FROM foo INNER JOIN bar ON foo.id=bar.id AND foo.val > "
+      "bar.val;");
   queries.push_back("SELECT * FROM foo LEFT JOIN bar ON foo.id=bar.id;");
-  queries.push_back("SELECT * FROM foo RIGHT JOIN bar ON foo.id=bar.id AND foo.val > bar.val;");
-  queries.push_back("SELECT * FROM foo FULL OUTER JOIN bar ON foo.id=bar.id AND foo.val > bar.val;");
+  queries.push_back(
+      "SELECT * FROM foo RIGHT JOIN bar ON foo.id=bar.id AND foo.val > "
+      "bar.val;");
+  queries.push_back(
+      "SELECT * FROM foo FULL OUTER JOIN bar ON foo.id=bar.id AND foo.val > "
+      "bar.val;");
 
   auto parser = parser::PostgresParser::GetInstance();
   // Parsing
@@ -217,7 +223,9 @@ TEST_F(PostgresParserTests, ExprTest) {
   std::vector<std::string> queries;
 
   // Select with complicated where, tests both BoolExpr and AExpr
-  queries.push_back("SELECT * FROM foo WHERE id > 3 AND value < 10 OR id < 3 AND value > 10;");
+  queries.push_back(
+      "SELECT * FROM foo WHERE id > 3 AND value < 10 OR id < 3 AND value > "
+      "10;");
 
   auto parser = parser::PostgresParser::GetInstance();
   // Parsing
@@ -235,6 +243,27 @@ TEST_F(PostgresParserTests, ExprTest) {
   }
 }
 
+TEST_F(PostgresParserTests, InsertTest) {
+  std::vector<std::string> queries;
+
+  // Select with complicated where, tests both BoolExpr and AExpr
+  queries.push_back("INSERT INTO foo VALUES(1, 2, 3) WHERE id = 5;");
+
+  auto parser = parser::PostgresParser::GetInstance();
+  // Parsing
+  UNUSED_ATTRIBUTE int ii = 0;
+  for (auto query : queries) {
+    auto stmt_list = parser.BuildParseTree(query).release();
+    EXPECT_TRUE(stmt_list->is_valid);
+    if (stmt_list->is_valid == false) {
+      LOG_ERROR("Message: %s, line: %d, col: %d", stmt_list->parser_msg,
+                stmt_list->error_line, stmt_list->error_col);
+    }
+    // LOG_TRACE("%d : %s", ++ii, stmt_list->GetInfo().c_str());
+    LOG_INFO("%d : %s", ++ii, stmt_list->GetInfo().c_str());
+    delete stmt_list;
+  }
+}
 
 }  // End test namespace
 }  // End peloton namespace
