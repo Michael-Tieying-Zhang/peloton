@@ -10,19 +10,19 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include <include/parser/pg_list.h>
 #include <iostream>
 #include <string>
-#include <include/parser/pg_list.h>
 
-#include "parser/postgresparser.h"
 #include "common/exception.h"
-#include "expression/star_expression.h"
-#include "expression/tuple_value_expression.h"
+#include "expression/aggregate_expression.h"
+#include "expression/comparison_expression.h"
+#include "expression/conjunction_expression.h"
 #include "expression/constant_value_expression.h"
 #include "expression/function_expression.h"
-#include "expression/aggregate_expression.h"
-#include "expression/conjunction_expression.h"
-#include "expression/comparison_expression.h"
+#include "expression/star_expression.h"
+#include "expression/tuple_value_expression.h"
+#include "parser/postgresparser.h"
 #include "type/types.h"
 #include "type/value_factory.h"
 
@@ -546,6 +546,7 @@ expression::AbstractExpression* PostgresParser::WhereTransform(Node* root) {
 // SelectStmt parsenodes.
 parser::SQLStatement* PostgresParser::InsertTransform(InsertStmt* root) {
   parser::InsertStatement* result = new parser::InsertStatement();
+  result->table_ref_ = RangeVarTransform((RangeVar*)(root->relation));
   //  result->select_list = TargetTransform(root->targetList);
   //  result->from_table = FromTransform(root->fromClause);
   //  result->group_by = GroupByTransform(root->groupClause,
