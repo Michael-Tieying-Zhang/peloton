@@ -247,11 +247,7 @@ TEST_F(PostgresParserTests, InsertTest) {
   std::vector<std::string> queries;
 
   // Select with complicated where, tests both BoolExpr and AExpr
-<<<<<<< HEAD
   queries.push_back("INSERT INTO foo (1, 2, 3), (4, 5, 6);");
-=======
-  queries.push_back("INSERT INTO foo VALUES (1,2,3), (4,5,6);");
->>>>>>> fb93e24... add value list transform for insert multiple rows
 
   auto parser = parser::PostgresParser::GetInstance();
   // Parsing
@@ -263,6 +259,17 @@ TEST_F(PostgresParserTests, InsertTest) {
       LOG_ERROR("Message: %s, line: %d, col: %d", stmt_list->parser_msg,
                 stmt_list->error_line, stmt_list->error_col);
     }
+    LOG_INFO("%d : %s", ++ii, stmt_list->GetInfo().c_str());
+
+    EXPECT_EQ(1, stmt_list->GetNumStatements());
+    EXPECT_TRUE(stmt_list->GetStatement(0)->GetType() == StatementType::INSERT);
+    auto insert_stmt = (parser::InsertStatement *)stmt_list->GetStatement(0);
+    EXPECT_EQ("foo", insert_stmt->GetTableName());
+    EXPECT_TRUE(insert_stmt->insert_values != nullptr);
+    EXPECT_TRUE(insert_stmt->select->GetType() == StatementType::SELECT);
+    LOG_ERROR(insert_stmt->select->from_table->GetTableName());
+    EXPECT_EQ("bar", insert_stmt->select->from_table->GetTableName());
+
     // LOG_TRACE("%d : %s", ++ii, stmt_list->GetInfo().c_str());
     LOG_INFO("%d : %s", ++ii, stmt_list->GetInfo().c_str());
     delete stmt_list;
