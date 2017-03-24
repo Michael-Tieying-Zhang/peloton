@@ -247,7 +247,11 @@ TEST_F(PostgresParserTests, InsertTest) {
   std::vector<std::string> queries;
 
   // Select with complicated where, tests both BoolExpr and AExpr
+<<<<<<< HEAD
   queries.push_back("INSERT INTO foo (1, 2, 3), (4, 5, 6);");
+=======
+  queries.push_back("INSERT INTO foo VALUES (1,2,3), (4,5,6);");
+>>>>>>> fb93e24... add value list transform for insert multiple rows
 
   auto parser = parser::PostgresParser::GetInstance();
   // Parsing
