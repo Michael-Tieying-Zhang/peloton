@@ -247,7 +247,7 @@ TEST_F(PostgresParserTests, InsertTest) {
   std::vector<std::string> queries;
 
   // Select with complicated where, tests both BoolExpr and AExpr
-  queries.push_back("INSERT INTO foo VALUES(1, 2, 3) WHERE id = 5;");
+  queries.push_back("INSERT INTO foo select * from bar;");
 
   auto parser = parser::PostgresParser::GetInstance();
   // Parsing
