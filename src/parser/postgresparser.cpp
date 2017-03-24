@@ -544,6 +544,21 @@ expression::AbstractExpression* PostgresParser::WhereTransform(Node* root) {
 // and transfers into a Peloton SelectStatement parsenode.
 // Please refer to parser/parsenode.h for the definition of
 // SelectStmt parsenodes.
+parser::SQLStatement* PostgresParser::InsertTransform(InsertStmt* root) {
+  parser::InsertStatement* result = new parser::InsertStatement();
+  //  result->select_list = TargetTransform(root->targetList);
+  //  result->from_table = FromTransform(root->fromClause);
+  //  result->group_by = GroupByTransform(root->groupClause,
+  // root->havingClause);
+  //  result->order = OrderByTransform(root->sortClause);
+  //  result->where_clause = WhereTransform(root->whereClause);
+  return (parser::SQLStatement*)result;
+}
+
+// This function takes in a Postgres SelectStmt parsenode
+// and transfers into a Peloton SelectStatement parsenode.
+// Please refer to parser/parsenode.h for the definition of
+// SelectStmt parsenodes.
 parser::SQLStatement* PostgresParser::SelectTransform(SelectStmt* root) {
   parser::SelectStatement* result = new parser::SelectStatement();
   result->select_list = TargetTransform(root->targetList);
@@ -564,6 +579,10 @@ parser::SQLStatement* PostgresParser::NodeTransform(ListCell* stmt) {
     case T_SelectStmt: {
       result =
           SelectTransform(reinterpret_cast<SelectStmt*>(stmt->data.ptr_value));
+      break;
+    }
+    case T_InsertStmt: {
+      result = InsertTransform((InsertStmt*)stmt->data.ptr_value);
       break;
     }
     default:
